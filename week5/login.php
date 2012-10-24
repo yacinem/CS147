@@ -1,3 +1,29 @@
+<?php
+
+function test_credentials($username, $entered_password) {
+    echo strcmp($entered_password, "test");
+    return (strcmp($username, "test") == 0) && (strcmp($entered_password, "test") == 0);
+}
+
+session_start();
+$wrong_login = FALSE;
+if (isset($_GET["username"]) && isset($_GET["password"])) {
+    echo $_GET["username"];
+    echo $_GET["password"];
+    if (test_credentials($_GET["username"], $_GET["password"])) {
+        $_SESSION["username"] = $_GET["username"];
+        $user_logged_in = TRUE;
+        $username = $_GET["username"];
+    } else {
+        $wrong_login = TRUE;
+    }
+} else if (isset($SESSION_["username"])) {
+    $user_logged_in = TRUE;
+    $username = $SESSION_["username"];
+} else {
+    $user_logged_in = FALSE;
+}
+?>
 <!DOCTYPE html> 
 <html>
 
@@ -28,16 +54,33 @@
 	</div><!-- /header -->
 
 	<div data-role="content">
+    <?php
+        if ($user_logged_in) {
+            echo '<div>';
+            echo '<p>Thank you for logging in, ' . $username . '.</p></div>';
+        } else {
+            if ($wrong_login) {
+                echo '<div>';
+                echo '<p>Wrong username/password.</p>';
+                echo '</div>';
+            }
+            echo '
+                <p>
+                <form action="login.php" method="get">
+                <div data-role="fieldcontain">
+                <label for="foo">Username:</label>
+                <input type="text" name="username" id="username-box">
+                </div>
+                <div data-role="fieldcontain">
+                <label for="bar">Password:</label>
+                <input type="password" name="password" id="password-box">
+                </div>
+                <input type="submit" value="Login">
+                </form>
+                </p>';
+        }
+    ?>
 	
-	<p>The form should go here</p>
-		<div data-role="fieldcontain">
-			
-		</div>	
-	
-		
-	<div id="info">
-		<p>Thank you for logging. You should be able to see all sorts of user information here.</p>
-	</div>	
 	</div><!-- /content -->
 
     <div data-role="footer" data-id="samebar" class="nav-glyphish-example" data-position="fixed" data-tap-toggle="false">
