@@ -25,7 +25,7 @@ session_start();
 
 <body>
 
-<div data-role="page" id="filter">
+<div data-role="page" class="filter">
 	
 	<div data-role="header">
 		<h1>User Sessions</h1>
@@ -46,10 +46,10 @@ session_start();
 		</form>
 		
 		<script type="text/javascript">
-		$("#filter").unbind('pageinit');
-		$("#filter").bind('pageinit', function(event){ 
+		$(".filter").unbind('pageinit');
+		$(".filter").bind('pageinit', function(event){ 
 				alert("This is a nice alert");
-				$("#filter").find("#localstoragename").html("The user we get from local storage is: " + localStorage.getItem('username'));
+				$(".filter").find("#localstoragename").html("The user we get from local storage is: " + localStorage.getItem('username'));
 		});
 		</script>
 		
